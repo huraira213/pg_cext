@@ -1,0 +1,5 @@
+# Control file for pg_learning_extension
+default_version = '1.0'
+comment = 'Learning extension for PostgreSQL'
+module_pathname = '$libdir/pg_cext'
+relocatable = true
