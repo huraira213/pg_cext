@@ -17,3 +17,7 @@ CREATE OR REPLACE FUNCTION sub_nums(int,int)
 RETURNS int
 AS 'MODULE_PATHNAME','sub_nums'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION hello_extension(text) RETURNS text
+AS 'MODULE_PATHNAME', 'hello_extension'
+LANGUAGE C STRICT;
