@@ -21,3 +21,21 @@ LANGUAGE C STRICT;
 CREATE FUNCTION hello_extension(text) RETURNS text
 AS 'MODULE_PATHNAME', 'hello_extension'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION hows_your_day(text) RETURNS text
+AS 'MODULE_PATHNAME', 'hows_your_day'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION reverse_string(text) RETURNS text
+AS 'MODULE_PATHNAME', 'reverse_string'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION capitalize_text(text)
+RETURNS text
+AS 'MODULE_PATHNAME', 'capitalize_text'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION count_words(text)
+RETURNS int
+AS 'MODULE_PATHNAME', 'count_words'
+LANGUAGE C STRICT;

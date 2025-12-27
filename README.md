@@ -1,6 +1,6 @@
 # pg_cext - PostgreSQL C Extension
 
-This is a simple PostgreSQL extension written in C, named `pg_cext` (short for PostgreSQL C Extension). It serves as a learning example for creating custom extensions in PostgreSQL. The extension provides basic arithmetic operations (addition, subtraction, multiplication, division) and a greeting function.
+This is a simple PostgreSQL extension written in C, named `pg_cext` (short for PostgreSQL C Extension). It serves as a learning example for creating custom extensions in PostgreSQL. The extension provides basic arithmetic operations (addition, subtraction, multiplication, division), string manipulation functions, and greeting functions.
 
 ## Files in the Project
 
@@ -11,6 +11,10 @@ This is the main C source file containing the implementation of the extension's 
 - `sub_nums(int, int)`: Subtracts the second integer from the first.
 - `divide_nums(int, int)`: Divides the first integer by the second (with division by zero check).
 - `hello_extension(text)`: Returns a greeting message prefixed with "Hello, " followed by the input text.
+- `hows_your_day(text)`: Returns a response about the day's mood based on input text.
+- `reverse_string(text)`: Reverses the input string.
+- `capitalize_text(text)`: Capitalizes the first letter of each word in the input text.
+- `count_words(text)`: Counts the number of words in the input text.
 
 The file includes necessary PostgreSQL headers and uses the PG_MODULE_MAGIC macro to identify it as a PostgreSQL module.
 
@@ -53,8 +57,20 @@ The license file contains the terms under which this software is distributed. (N
 After installation, you can use the functions in SQL queries:
 
 ```sql
+-- Arithmetic operations
 SELECT add_nums(5, 3);  -- Returns 8
+SELECT mul_nums(5, 3);  -- Returns 15
+SELECT sub_nums(5, 3);  -- Returns 2
+SELECT divide_nums(6, 3);  -- Returns 2
+
+-- Greeting functions
 SELECT hello_extension('World');  -- Returns 'Hello, World!'
+SELECT hows_your_day('great');  -- Returns 'Today my day is , great?'
+
+-- String manipulation
+SELECT reverse_string('hello world');  -- Returns 'dlrow olleh'
+SELECT capitalize_text('hello world from postgres');  -- Returns 'Hello World From Postgres'
+SELECT count_words('hello world from postgres');  -- Returns 4
 ```
 
 ## Purpose
@@ -63,5 +79,6 @@ This extension demonstrates the basics of writing PostgreSQL extensions in C, in
 - Defining C functions with PostgreSQL's function manager interface.
 - Creating the necessary control and SQL files.
 - Building and installing the extension.
+- Implementing various data types: integers and text strings.
 
 It's intended for educational purposes to help developers learn how to extend PostgreSQL with custom functionality.
