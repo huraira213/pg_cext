@@ -1,6 +1,7 @@
 #include "postgres.h"
 #include "fmgr.h"
 #include "utils/builtins.h"
+#include "utils/array.h"
 #include <string.h>   
 #include <ctype.h>
 #include <math.h>
@@ -21,6 +22,8 @@ PG_FUNCTION_INFO_V1(factorial);
 PG_FUNCTION_INFO_V1(is_prime);
 PG_FUNCTION_INFO_V1(safe_divide);
 PG_FUNCTION_INFO_V1(power_float);
+PG_FUNCTION_INFO_V1(arr_sum);
+PG_FUNCTION_INFO_V1(arr_max);
 
 
 
@@ -234,4 +237,49 @@ Datum power_float(PG_FUNCTION_ARGS)
     float8 result = pow(base, exp);
 
     PG_RETURN_FLOAT8(result);
+}
+
+// Sum the elements of a float8 array
+Datum arr_sum(PG_FUNCTION_ARGS)
+{
+    ArrayType *arr = PG_GETARG_ARRAYTYPE_P(0);
+    int ndims = ARR_NDIM(arr);
+    int *dims = ARR_DIMS(arr);
+    int nitems = ArrayGetNItems(ndims, dims);
+    
+    if (nitems == 0)
+        PG_RETURN_FLOAT8(0.0);
+    
+    float8 *data = (float8 *) ARR_DATA_PTR(arr);
+    float8 sum = 0.0;
+    
+    for (int i = 0; i < nitems; i++)
+    {
+        sum += data[i];
+    }
+    
+    PG_RETURN_FLOAT8(sum);
+}
+
+// Find the maximum element in a float8 array
+Datum arr_max(PG_FUNCTION_ARGS)
+{
+    ArrayType *arr = PG_GETARG_ARRAYTYPE_P(0);
+    int ndims = ARR_NDIM(arr);
+    int *dims = ARR_DIMS(arr);
+    int nitems = ArrayGetNItems(ndims, dims);
+    
+    if (nitems == 0)
+        PG_RETURN_NULL();
+    
+    float8 *data = (float8 *) ARR_DATA_PTR(arr);
+    float8 max_val = data[0];
+    
+    for (int i = 1; i < nitems; i++)
+    {
+        if (data[i] > max_val)
+            max_val = data[i];
+    }
+    
+    PG_RETURN_FLOAT8(max_val);
 }

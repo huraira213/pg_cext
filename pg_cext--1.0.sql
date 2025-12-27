@@ -59,3 +59,13 @@ CREATE FUNCTION power_float(float8, float8)
 RETURNS float8
 AS 'MODULE_PATHNAME', 'power_float'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION arr_sum(float8[])
+RETURNS float8
+AS 'MODULE_PATHNAME', 'arr_sum'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION arr_max(float8[])
+RETURNS float8
+AS 'MODULE_PATHNAME', 'arr_max'
+LANGUAGE C STRICT;
