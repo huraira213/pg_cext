@@ -1,6 +1,9 @@
 #include "postgres.h"
 #include "fmgr.h"
 #include "utils/builtins.h"
+#include <string.h>   
+#include <ctype.h>
+#include <math.h>
 
 
 PG_MODULE_MAGIC;
@@ -14,6 +17,13 @@ PG_FUNCTION_INFO_V1(hows_your_day);
 PG_FUNCTION_INFO_V1(reverse_string);
 PG_FUNCTION_INFO_V1(capitalize_text);
 PG_FUNCTION_INFO_V1(count_words);
+PG_FUNCTION_INFO_V1(factorial);
+PG_FUNCTION_INFO_V1(is_prime);
+PG_FUNCTION_INFO_V1(safe_divide);
+PG_FUNCTION_INFO_V1(power_float);
+
+
+
 
 Datum add_nums(PG_FUNCTION_ARGS)
 {
@@ -152,4 +162,76 @@ Datum count_words(PG_FUNCTION_ARGS)
     }
 
     PG_RETURN_INT32(word_count);
+}
+
+// Calculate the factorial of a number
+Datum factorial(PG_FUNCTION_ARGS)
+{
+    int32 n = PG_GETARG_INT32(0);
+
+    if (n < 0)
+        ereport(ERROR,
+                (errmsg("factorial is not defined for negative numbers")));
+
+    if (n > 12)
+        ereport(ERROR,
+                (errmsg("factorial overflow: max supported input is 12")));
+
+    int32 result = 1;
+    for (int i = 2; i <= n; i++)
+        result *= i;
+
+    PG_RETURN_INT32(result);
+}
+
+// Check if a number is prime
+Datum is_prime(PG_FUNCTION_ARGS)
+{
+    int32 n = PG_GETARG_INT32(0);
+
+    if (n <= 1)
+        PG_RETURN_BOOL(false);
+
+    if (n == 2)
+        PG_RETURN_BOOL(true);
+
+    if (n % 2 == 0)
+        PG_RETURN_BOOL(false);
+
+    for (int i = 3; i * i <= n; i += 2)
+    {
+        if (n % i == 0)
+            PG_RETURN_BOOL(false);
+    }
+
+    PG_RETURN_BOOL(true);
+}
+
+// Safely divide two numbers, handling division by zero
+Datum safe_divide(PG_FUNCTION_ARGS)
+{
+    if (PG_ARGISNULL(0) || PG_ARGISNULL(1))
+        PG_RETURN_NULL();
+
+    float8 a = PG_GETARG_FLOAT8(0);
+    float8 b = PG_GETARG_FLOAT8(1);
+
+    if (b == 0.0)
+        PG_RETURN_NULL();
+
+    PG_RETURN_FLOAT8(a / b);
+}    
+
+// Raise a float to the power of another float
+Datum power_float(PG_FUNCTION_ARGS)
+{
+    if (PG_ARGISNULL(0) || PG_ARGISNULL(1))
+        PG_RETURN_NULL();
+
+    float8 base = PG_GETARG_FLOAT8(0);
+    float8 exp  = PG_GETARG_FLOAT8(1);
+
+    float8 result = pow(base, exp);
+
+    PG_RETURN_FLOAT8(result);
 }

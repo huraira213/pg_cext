@@ -39,3 +39,23 @@ CREATE FUNCTION count_words(text)
 RETURNS int
 AS 'MODULE_PATHNAME', 'count_words'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION factorial(int)
+RETURNS int4
+AS 'MODULE_PATHNAME', 'factorial'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION is_prime(int)
+RETURNS boolean
+AS 'MODULE_PATHNAME', 'is_prime'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION safe_divide(float8, float8)
+RETURNS float8      
+AS 'MODULE_PATHNAME', 'safe_divide'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION power_float(float8, float8)
+RETURNS float8
+AS 'MODULE_PATHNAME', 'power_float'
+LANGUAGE C STRICT;

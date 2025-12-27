@@ -1,6 +1,6 @@
 # pg_cext - PostgreSQL C Extension
 
-This is a simple PostgreSQL extension written in C, named `pg_cext` (short for PostgreSQL C Extension). It serves as a learning example for creating custom extensions in PostgreSQL. The extension provides basic arithmetic operations (addition, subtraction, multiplication, division), string manipulation functions, and greeting functions.
+This is a simple PostgreSQL extension written in C, named `pg_cext` (short for PostgreSQL C Extension). It serves as a learning example for creating custom extensions in PostgreSQL. The extension provides basic arithmetic operations (addition, subtraction, multiplication, division), mathematical functions (factorial, prime checking, safe division, power), and string manipulation functions.
 
 ## Files in the Project
 
@@ -10,6 +10,10 @@ This is the main C source file containing the implementation of the extension's 
 - `mul_nums(int, int)`: Multiplies two integers.
 - `sub_nums(int, int)`: Subtracts the second integer from the first.
 - `divide_nums(int, int)`: Divides the first integer by the second (with division by zero check).
+- `factorial(int)`: Calculates the factorial of a non-negative integer (max 12 to avoid overflow).
+- `is_prime(int)`: Checks if an integer is prime.
+- `safe_divide(float8, float8)`: Safely divides two floats, returning NULL for division by zero or NULL inputs.
+- `power_float(float8, float8)`: Raises the first float to the power of the second float.
 - `hello_extension(text)`: Returns a greeting message prefixed with "Hello, " followed by the input text.
 - `hows_your_day(text)`: Returns a response about the day's mood based on input text.
 - `reverse_string(text)`: Reverses the input string.
@@ -63,6 +67,14 @@ SELECT mul_nums(5, 3);  -- Returns 15
 SELECT sub_nums(5, 3);  -- Returns 2
 SELECT divide_nums(6, 3);  -- Returns 2
 
+-- Mathematical functions
+SELECT factorial(5);  -- Returns 120
+SELECT is_prime(7);  -- Returns true
+SELECT is_prime(10);  -- Returns false
+SELECT safe_divide(10.0, 2.0);  -- Returns 5.0
+SELECT safe_divide(10.0, 0.0);  -- Returns NULL
+SELECT power_float(2.0, 3.0);  -- Returns 8.0
+
 -- Greeting functions
 SELECT hello_extension('World');  -- Returns 'Hello, World!'
 SELECT hows_your_day('great');  -- Returns 'Today my day is , great?'
@@ -79,6 +91,7 @@ This extension demonstrates the basics of writing PostgreSQL extensions in C, in
 - Defining C functions with PostgreSQL's function manager interface.
 - Creating the necessary control and SQL files.
 - Building and installing the extension.
-- Implementing various data types: integers and text strings.
+- Implementing various data types: integers, floats, booleans, and text strings.
+- Handling NULL values and error conditions.
 
 It's intended for educational purposes to help developers learn how to extend PostgreSQL with custom functionality.
