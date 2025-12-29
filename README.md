@@ -109,3 +109,7 @@ This extension demonstrates the basics of writing PostgreSQL extensions in C, in
 - Logging messages to the server log.
 
 It's intended for educational purposes to help developers learn how to extend PostgreSQL with custom functionality.
+
+## Project Completion
+
+This project has been completed as a learning exercise covering Stage 5 of PostgreSQL extension development. It includes basic arithmetic, math, string, array, logging, and SPI-based table querying functions. All code has been tested, documented, and pushed to the repository.
