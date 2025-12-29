@@ -21,6 +21,8 @@ This is the main C source file containing the implementation of the extension's 
 - `reverse_string(text)`: Reverses the input string.
 - `capitalize_text(text)`: Capitalizes the first letter of each word in the input text.
 - `count_words(text)`: Counts the number of words in the input text.
+- `log_message(text)`: Logs a message to the PostgreSQL server log at INFO level.
+- `get_table_row_count(text)`: Returns the row count of the specified table using SPI.
 
 The file includes necessary PostgreSQL headers and uses the PG_MODULE_MAGIC macro to identify it as a PostgreSQL module.
 
@@ -89,6 +91,10 @@ SELECT hows_your_day('great');  -- Returns 'Today my day is , great?'
 SELECT reverse_string('hello world');  -- Returns 'dlrow olleh'
 SELECT capitalize_text('hello world from postgres');  -- Returns 'Hello World From Postgres'
 SELECT count_words('hello world from postgres');  -- Returns 4
+
+-- Logging and table utilities
+SELECT log_message('This is a test log message');  -- Logs to PostgreSQL server log
+SELECT get_table_row_count('pg_class');  -- Returns row count of the pg_class table
 ```
 
 ## Purpose
@@ -99,5 +105,7 @@ This extension demonstrates the basics of writing PostgreSQL extensions in C, in
 - Building and installing the extension.
 - Implementing various data types: integers, floats, booleans, text strings, and arrays.
 - Handling NULL values and error conditions.
+- Using SPI (Server Programming Interface) for dynamic queries.
+- Logging messages to the server log.
 
 It's intended for educational purposes to help developers learn how to extend PostgreSQL with custom functionality.
