@@ -23,6 +23,7 @@ This is the main C source file containing the implementation of the extension's 
 - `count_words(text)`: Counts the number of words in the input text.
 - `log_message(text)`: Logs a message to the PostgreSQL server log at INFO level.
 - `get_table_row_count(text)`: Returns the row count of the specified table using SPI.
+- `current_timestamp_custom()`: Returns the current timestamp.
 
 The file includes necessary PostgreSQL headers and uses the PG_MODULE_MAGIC macro to identify it as a PostgreSQL module.
 
@@ -95,6 +96,9 @@ SELECT count_words('hello world from postgres');  -- Returns 4
 -- Logging and table utilities
 SELECT log_message('This is a test log message');  -- Logs to PostgreSQL server log
 SELECT get_table_row_count('pg_class');  -- Returns row count of the pg_class table
+
+-- Timestamp utility
+SELECT current_timestamp_custom();  -- Returns current timestamp
 ```
 
 ## Purpose
