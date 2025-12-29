@@ -2,6 +2,7 @@
 #include "fmgr.h"
 #include "utils/builtins.h"
 #include "utils/array.h"
+#include "executor/spi.h"
 #include <string.h>   
 #include <ctype.h>
 #include <math.h>
@@ -24,6 +25,9 @@ PG_FUNCTION_INFO_V1(safe_divide);
 PG_FUNCTION_INFO_V1(power_float);
 PG_FUNCTION_INFO_V1(arr_sum);
 PG_FUNCTION_INFO_V1(arr_max);
+PG_FUNCTION_INFO_V1(log_message);
+PG_FUNCTION_INFO_V1(get_table_row_count);
+
 
 
 
@@ -282,4 +286,71 @@ Datum arr_max(PG_FUNCTION_ARGS)
     }
     
     PG_RETURN_FLOAT8(max_val);
+}
+
+// Log a message to the PostgreSQL server log
+Datum log_message(PG_FUNCTION_ARGS)
+{
+    if (PG_ARGISNULL(0))
+    {
+        elog(INFO, "log_message called with NULL input");
+        PG_RETURN_VOID();
+    }
+
+    text *input_text = PG_GETARG_TEXT_PP(0);
+
+    char *c_string = text_to_cstring(input_text);
+
+    elog(INFO, "Log Message from Extension: %s", c_string);
+
+    PG_RETURN_VOID();
+}
+
+// Get the row count of a specified table
+Datum get_table_row_count(PG_FUNCTION_ARGS)
+{
+    if (PG_ARGISNULL(0))
+        PG_RETURN_NULL();
+
+    text *table_text = PG_GETARG_TEXT_PP(0);
+    char *table_name = text_to_cstring(table_text);
+
+    // Connect to SPI
+    if (SPI_connect() != SPI_OK_CONNECT)
+        elog(ERROR, "SPI_connect failed");
+
+    // Safely quote the table name
+    char *safe_table = quote_identifier(table_name);
+
+    char query[256];
+    snprintf(query, sizeof(query),
+             "SELECT COUNT(*) FROM %s;", safe_table);
+
+    int ret = SPI_execute(query, true, 0);
+
+    if (ret != SPI_OK_SELECT)
+    {
+        SPI_finish();
+        elog(ERROR, "SPI_execute failed");
+    }
+
+    if (SPI_processed != 1)
+    {
+        SPI_finish();
+        elog(ERROR, "Unexpected result");
+    }
+
+    TupleDesc tupdesc = SPI_tuptable->tupdesc;
+    HeapTuple tuple = SPI_tuptable->vals[0];
+
+    char *value = SPI_getvalue(tuple, tupdesc, 1);
+
+    SPI_finish();
+
+    if (value == NULL)
+        PG_RETURN_NULL();
+
+    int64 count = atoll(value);
+
+    PG_RETURN_INT64(count);
 }

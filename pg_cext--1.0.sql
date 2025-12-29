@@ -69,3 +69,13 @@ CREATE FUNCTION arr_max(float8[])
 RETURNS float8
 AS 'MODULE_PATHNAME', 'arr_max'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION log_message(text)
+RETURNS void
+AS 'MODULE_PATHNAME', 'log_message'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION get_table_row_count(text)
+RETURNS bigint
+AS 'MODULE_PATHNAME', 'get_table_row_count'
+LANGUAGE C STRICT;
