@@ -79,3 +79,33 @@ CREATE FUNCTION get_table_row_count(text)
 RETURNS bigint
 AS 'MODULE_PATHNAME', 'get_table_row_count'
 LANGUAGE C STRICT;
+
+CREATE FUNCTION current_timestamp_custom()
+RETURNS timestamp
+AS 'MODULE_PATHNAME', 'current_timestamp_custom'
+LANGUAGE C STRICT;
+
+CREATE FUNCTION add_one(integer) RETURNS integer
+     AS 'MODULE_PATHNAME', 'add_one'
+     LANGUAGE C STRICT;
+
+-- note overloading of SQL function name "add_one"
+CREATE FUNCTION add_one(double precision) RETURNS double precision
+     AS 'MODULE_PATHNAME', 'add_one_float8'
+     LANGUAGE C STRICT;
+
+CREATE FUNCTION makepoint(point, point) RETURNS point
+     AS 'MODULE_PATHNAME', 'makepoint'
+     LANGUAGE C STRICT;
+
+CREATE FUNCTION copytext(text) RETURNS text
+     AS 'MODULE_PATHNAME', 'copytext'
+     LANGUAGE C STRICT;
+
+CREATE FUNCTION concat_text(text, text) RETURNS text
+     AS 'MODULE_PATHNAME', 'concat_text'
+     LANGUAGE C STRICT;
+
+CREATE FUNCTION t_starts_with(text, text) RETURNS boolean
+     AS 'MODULE_PATHNAME', 't_starts_with'
+     LANGUAGE C STRICT;
